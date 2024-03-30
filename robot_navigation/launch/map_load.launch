@@ -1,0 +1,6 @@
+<launch>
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)" output="log"/>
+  <remap from="map" to="/map" />
+
+</launch>

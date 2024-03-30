@@ -1,0 +1,51 @@
+DWAPlannerROS:
+
+# Robot Configuration Parameters
+  max_vel_x: 0.08
+  min_vel_x: -0.08
+
+  max_vel_y: 0.0
+  min_vel_y: 0.0
+
+# The velocity when robot is moving in a straight line
+  max_vel_trans: 0.08
+  min_vel_trans: 0.015
+
+  max_vel_theta: 0.5
+  min_vel_theta: 0.15
+
+  acc_lim_x: 0.5
+  acc_lim_y: 0.0
+
+  acc_lim_theta: 0.5
+  acc_lim_trans: 0.5
+
+# Goal Tolerance Parametes
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.3
+  latch_xy_goal_tolerance: true
+
+# Forward Simulation Parameters
+  sim_time: 2.0
+  vx_samples: 50
+  vy_samples: 0
+  vth_samples: 100
+  controller_frequency: 5.0
+  trans_stopped_vel: 0.1
+  theta_stopped_vel: 0.1
+
+# Trajectory Scoring Parameters25
+  path_distance_bias: 24.0
+  goal_distance_bias: 18.0
+  occdist_scale: 0.01
+  forward_point_distance: 0.325
+  stop_time_buffer: 0.2
+  scaling_speed: 0.2525
+  max_scaling_factor: 0.2
+
+# Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05
+
+# Debugging
+  publish_traj_pc : false
+  publish_cost_grid_pc: false

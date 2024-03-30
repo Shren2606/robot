@@ -1,0 +1,52 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+  <node pkg="rosserial_python" type="serial_node.py" name="ararbot_core" output="screen">
+    <param name="port" value="/dev/ttyACM0"/>
+    <param name="baud" value="115200"/>
+    <param name="tf_prefix" value="$(arg multi_robot_name)"/>
+  </node>
+
+  <!--include file="$(find robot_bringup)/include/description.launch.xml">
+  </include-->
+    <!-- Bringup irop_remote -->
+  <include file="$(find rosbridge_server)/launch/rosbridge_tcp.launch">  
+  <arg name="bson_only_mode" value="true"/>
+  </include>
+
+    <!-- Bringup irop_remote -->
+  <include file="$(find robot_bringup)/launch/robot_remote.launch"/> 
+
+  <!-- Lidar -->
+  <include file="$(find ydlidar_ros_driver)/launch/X2.launch">
+  </include>
+  <!--node pkg="image_pub" type="image_pub" name="image_pub" output="screen">
+  </node-->
+  <node pkg="robot_odom" type="robot_odom" name="robot_odom" output="screen">
+  </node>
+  <!--node pkg="rqt_robot_steering" type="rqt_robot_steering" name="rqt_robot_steering" output="screen">
+  </node-->
+  <!-- IMU -->
+  <!--include file="$(find mpu6050_driver)/launch/mpu6050_driver.launch">
+  </include-->
+  <!--node pkg="mpu_6050_driver" type="imu_node.py" name="imu_node" output="screen">
+  </node-->
+  <!--node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 base_footprint imu 30 " /-->      
+  <!-- Extended Kalman Filter from robot_pose_ekf Node-->
+  <!-- Subscribe: /odom, /imu_data, /vo -->
+  <!-- Publish: /robot_pose_ekf/odom_combined -->
+  <remap from="odom" to="odom_data_quat" />
+  <remap from="imu_data" to="imu/data" />
+  <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+    <param name="output_frame" value="odom"/>
+    <param name="base_footprint_frame" value="base_footprint"/>
+    <param name="freq" value="30.0"/>
+    <param name="sensor_timeout" value="1.0"/>
+    <param name="odom_used" value="true"/>
+    <param name="imu_used" value="false"/>
+    <param name="vo_used" value="false"/>
+    <param name="gps_used" value="false"/>
+    <param name="debug" value="false"/>
+    <param name="self_diagnose" value="false"/>
+  </node>
+
+</launch>
